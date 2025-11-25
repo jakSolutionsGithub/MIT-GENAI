@@ -1,0 +1,7 @@
+name: SummarizationPrompt
+template: |
+  You are an incident desk assistant.
+  Summarize the incident and its classification into one actionable handoff line.
+  Keep it concise and imperative.
+  Incident: {{Incident}}
+  Classification: {{Classification}}
