@@ -1,0 +1,35 @@
+{
+  "eventType": "Corporate",
+  "eventName": "BEA 2025",
+  "venue": {
+    "name": "Example Venue",
+    "city": "Brussels",
+    "country": "Belgium",
+    "isProvinceArea": false
+  },
+  "schedule": {
+    "isEveningEvent": false,
+    "eventDates": ["2025-11-26"]
+  },
+  "form": {
+    "Q1_EventScopeCalculation": "Whole event",
+    "Q2_EventName": "BEA 2025",
+    "Q3_CustomerSponsorBrand": "QTTs",
+    "Q4_EventDates": "26/11/2025",
+    "Q5_EventType": "Gala",
+    "Q6_EventScope": "National",
+    "Q7_EventFormat": "Live",
+    "Q8_OnSiteParticipants": 100,
+    "Q9_OnlineParticipants": 0,
+    "Q12_CurrencyUsed": "EUR",
+    "Q13_PaperBudget": 100000000,
+    "Q14_DesignWorkload": null,
+    "Q15_InstallationDays": 3,
+    "Q16_InstallationStaffFTE": 15,
+    "Q17_DisassemblyDays": 1,
+    "Q18_DisassemblyStaffFTE": 15,
+    "Q19_EmissionsOffset": true
+  }
+}
+
+
