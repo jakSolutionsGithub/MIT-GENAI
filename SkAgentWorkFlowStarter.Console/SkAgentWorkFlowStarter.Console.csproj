@@ -5,14 +5,15 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-    </PropertyGroup>
+      <UserSecretsId>6a25231a-f8ad-4871-8a66-972f99881c57</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0"/>
-        <PackageReference Include="Microsoft.SemanticKernel" Version="1.67.1"/>
-        <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.67.1"/>
-        <PackageReference Include="Microsoft.SemanticKernel.PromptTemplates.Handlebars" Version="1.67.1"/>
-        <PackageReference Include="YamlDotNet" Version="16.3.0"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+        <PackageReference Include="Microsoft.SemanticKernel" Version="1.68.0" />
+        <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.68.0" />
+        <PackageReference Include="Microsoft.SemanticKernel.PromptTemplates.Handlebars" Version="1.68.0" />
+        <PackageReference Include="YamlDotNet" Version="16.3.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -22,10 +23,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="Samples\MyAgents\IncidentTriageAgent\Prompts\IncidentTriagePrompt.yaml"/>
-        <EmbeddedResource Include="Samples\MyAgents\IncidentTriageAgent\Prompts\IncidentTriagePrompt.yaml"/>
-        <None Remove="Samples\MyAgents\SummarizationAgent\Prompts\SummarizationPrompt.yaml"/>
-        <EmbeddedResource Include="Samples\MyAgents\SummarizationAgent\Prompts\SummarizationPrompt.yaml"/>
+        <None Remove="Samples\MyAgents\IncidentTriageAgent\Prompts\IncidentTriagePrompt.yaml" />
+        <EmbeddedResource Include="Samples\MyAgents\IncidentTriageAgent\Prompts\IncidentTriagePrompt.yaml" />
+        <None Remove="Samples\MyAgents\SummarizationAgent\Prompts\SummarizationPrompt.yaml" />
+        <EmbeddedResource Include="Samples\MyAgents\SummarizationAgent\Prompts\SummarizationPrompt.yaml" />
+        <None Remove="Samples\MyAgents\MobilityFormAgent\Prompts\MobilityFormPrompt.yaml" />
+        <EmbeddedResource Include="Samples\MyAgents\MobilityFormAgent\Prompts\MobilityFormPrompt.yaml" />
+
     </ItemGroup>
 
 
@@ -34,4 +38,14 @@
             <Link>.dockerignore</Link>
         </Content>
     </ItemGroup>
+
+   
+
+
+    <ItemGroup>
+        <None Update="Samples\MobilityAssistant\BaselineForm.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
 </Project>

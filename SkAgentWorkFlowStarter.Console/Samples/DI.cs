@@ -5,6 +5,8 @@ using SkAgentWorkFlowStarter.Console.Samples.MyAgents.IncidentTriageAgent;
 using SkAgentWorkFlowStarter.Console.Samples.MyAgents.SummarizationAgent;
 using SkAgentWorkFlowStarter.Console.Samples.Services;
 using SkAgentWorkFlowStarter.Console.Samples.Workflow;
+using SkAgentWorkFlowStarter.Console.Samples.MyAgents.MobilityFormAgent;
+
 
 namespace SkAgentWorkFlowStarter.Console.Samples;
 
@@ -19,6 +21,11 @@ public static class DI
         services.AddSingleton<IIncidentTriageAgentService, IncidentTriageAgentService>();
         services.AddSingleton<IWorkflowSampleService, WorkflowSampleService>();
         services.AddTransient<WorkflowRunner>();
+        services.AddSingleton<MobilityFormAgent>();
+        services.AddSingleton<IMobilityChatService, MobilityChatService>();
+        
+
+
         return services;
     }
 }
