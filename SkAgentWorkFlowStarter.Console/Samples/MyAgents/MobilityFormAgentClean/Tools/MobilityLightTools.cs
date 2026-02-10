@@ -11,6 +11,7 @@ public class MobilityLightTools
         [Description("Number of participants")] int count,
         [Description("Round-trip distance in km")] double distanceKm)
     {
+        System.Console.Error.WriteLine($"[action] Calcul CO2 participants: mode={mode}, count={count}, distance_km={distanceKm}");
         var factor = ModeFactor(mode);
         return Math.Round(factor * count * distanceKm, 2);
     }
@@ -21,6 +22,7 @@ public class MobilityLightTools
         [Description("Number of staff")] int count,
         [Description("Round-trip distance in km")] double distanceKm)
     {
+        System.Console.Error.WriteLine($"[action] Calcul CO2 staff: mode={mode}, count={count}, distance_km={distanceKm}");
         var factor = ModeFactor(mode);
         return Math.Round(factor * count * distanceKm, 2);
     }
@@ -32,6 +34,7 @@ public class MobilityLightTools
         [Description("Total distance in km (one-way)")] double distanceKm,
         [Description("Round trips")] int roundTrips)
     {
+        System.Console.Error.WriteLine($"[action] Calcul CO2 fret: mode={mode}, weight_kg={weightKg}, distance_km={distanceKm}, aller_retour={roundTrips}");
         var factor = FreightFactor(mode);
         var tons = Math.Max(0.05, weightKg / 1000.0);
         var km = distanceKm * Math.Max(1, roundTrips);
@@ -41,6 +44,7 @@ public class MobilityLightTools
     [KernelFunction("estimate_participant_split")]
     public string EstimateParticipantSplit([Description("Total attendees")] int totalAttendees)
     {
+        System.Console.Error.WriteLine($"[action] Estimation répartition participants: total={totalAttendees}");
         var local = (int)Math.Round(totalAttendees * 0.8);
         var intl = Math.Max(0, totalAttendees - local);
         return $"local:{local},intl:{intl}";

@@ -51,14 +51,20 @@ public sealed class MobilityChatServiceClean : IMobilityChatServiceClean
                 MissingSummary: "Let the model decide what is missing.",
                 UserMessage: user);
 
-            System.Console.Write("\nAssistant: ");
+            var printedAssistantLabel = false;
             await foreach (var chunk in _agent.StreamAsync(
                                new AgentRequest<MobilityFormInput>(user, input),
                                ct))
             {
+                if (!printedAssistantLabel)
+                {
+                    System.Console.Write("\nAssistant: ");
+                    printedAssistantLabel = true;
+                }
                 System.Console.Write(chunk);
             }
-            System.Console.WriteLine();
+            if (printedAssistantLabel)
+                System.Console.WriteLine();
         }
     }
 
