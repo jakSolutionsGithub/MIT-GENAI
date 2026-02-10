@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using SkAgentWorkFlowStarter.Console.Framework.Agents.Models;
@@ -47,6 +48,49 @@ public abstract class AgentBase<TVariables>(Kernel kernel, IPromptBuilder prompt
         _persistentHistory.AddAssistantMessage(response.Content ?? string.Empty);
 
         return response;
+    }
+
+    public async IAsyncEnumerable<string> StreamAsync(
+        AgentRequest<TVariables> request,
+        [EnumeratorCancellation] CancellationToken ct)
+    {
+        var kernelArguments = CreateKernelArguments(request.Variables);
+        var systemPrompt = await GetSystemPromptAsync(kernelArguments, ct);
+
+        ChatHistory history = [];
+        history.AddSystemMessage(systemPrompt);
+        if (UsePersistentHistory)
+            foreach (var msg in _persistentHistory)
+            {
+                if(msg.Role == AuthorRole.System)
+                    continue;
+                history.AddMessage(msg.Role, msg.Content ?? string.Empty);
+            }
+                
+
+        history.AddUserMessage(request.UserMessage);
+
+        var sb = new System.Text.StringBuilder();
+        await foreach (var update in _chatCompletionService.GetStreamingChatMessageContentsAsync(
+                           history,
+                           new PromptExecutionSettings
+                           {
+                               FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(
+                                   AuthorizedKernelFunctions,
+                                   options: new FunctionChoiceBehaviorOptions())
+                           },
+                           kernel,
+                           ct))
+        {
+            var chunk = update.Content;
+            if (string.IsNullOrEmpty(chunk)) continue;
+            sb.Append(chunk);
+            yield return chunk;
+        }
+
+        if (!UsePersistentHistory) yield break;
+        _persistentHistory.AddUserMessage(request.UserMessage);
+        _persistentHistory.AddAssistantMessage(sb.ToString());
     }
 
     private async Task<AgentResponse> AskAsync(ChatHistory history, CancellationToken ct)
