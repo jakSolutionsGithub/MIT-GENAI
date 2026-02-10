@@ -32,6 +32,5 @@ using var host = builder.Build();
   //  Console.WriteLine($"- {step.StepName}: {step.Output}");
 //}
 
-var mobilityChat = host.Services.GetRequiredService<IMobilityChatService>();
+var mobilityChat = host.Services.GetRequiredService<IMobilityChatServiceClean>();
 await mobilityChat.RunInteractiveAsync(CancellationToken.None);
-

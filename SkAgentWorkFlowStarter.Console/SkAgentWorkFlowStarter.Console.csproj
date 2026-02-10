@@ -27,8 +27,10 @@
         <EmbeddedResource Include="Samples\MyAgents\IncidentTriageAgent\Prompts\IncidentTriagePrompt.yaml" />
         <None Remove="Samples\MyAgents\SummarizationAgent\Prompts\SummarizationPrompt.yaml" />
         <EmbeddedResource Include="Samples\MyAgents\SummarizationAgent\Prompts\SummarizationPrompt.yaml" />
-        <None Remove="Samples\MyAgents\MobilityFormAgent\Prompts\MobilityFormPrompt.yaml" />
-        <EmbeddedResource Include="Samples\MyAgents\MobilityFormAgent\Prompts\MobilityFormPrompt.yaml" />
+    <None Remove="Samples\MyAgents\MobilityFormAgent\Prompts\MobilityFormPrompt.yaml" />
+    <EmbeddedResource Include="Samples\MyAgents\MobilityFormAgent\Prompts\MobilityFormPrompt.yaml" />
+    <None Remove="Samples\MyAgents\MobilityFormAgentClean\Prompts\MobilityFormPromptClean.yaml" />
+    <EmbeddedResource Include="Samples\MyAgents\MobilityFormAgentClean\Prompts\MobilityFormPromptClean.yaml" />
 
     </ItemGroup>
 

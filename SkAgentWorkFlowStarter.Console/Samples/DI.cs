@@ -6,6 +6,7 @@ using SkAgentWorkFlowStarter.Console.Samples.MyAgents.SummarizationAgent;
 using SkAgentWorkFlowStarter.Console.Samples.Services;
 using SkAgentWorkFlowStarter.Console.Samples.Workflow;
 using SkAgentWorkFlowStarter.Console.Samples.MyAgents.MobilityFormAgent;
+using SkAgentWorkFlowStarter.Console.Samples.MyAgents.MobilityFormAgentClean;
 
 
 namespace SkAgentWorkFlowStarter.Console.Samples;
@@ -23,6 +24,9 @@ public static class DI
         services.AddTransient<WorkflowRunner>();
         services.AddSingleton<MobilityFormAgent>();
         services.AddSingleton<IMobilityChatService, MobilityChatService>();
+        services.AddSingleton<MobilityFormAgentClean>();
+        services.AddSingleton<IMobilityChatServiceClean, MobilityChatServiceClean>();
+        services.AddSingleton<IMobilityFormStateStore, MobilityFormStateStore>();
         
 
 

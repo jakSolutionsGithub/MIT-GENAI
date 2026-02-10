@@ -9,17 +9,44 @@ namespace SkAgentWorkFlowStarter.Console.Framework.Agents.Abstractions;
 public abstract class AgentBase<TVariables>(Kernel kernel, IPromptBuilder promptBuilder) : IAgent<TVariables>
 {
     private readonly IChatCompletionService _chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
+    private readonly ChatHistory _persistentHistory = new();
     protected abstract string PromptFileName { get; }
     protected abstract IEnumerable<KernelFunction> AuthorizedKernelFunctions { get; }
+    protected virtual bool UsePersistentHistory => false;
+
+    public void ResetHistory()
+    {
+        _persistentHistory.Clear();
+    }
 
     public async Task<AgentResponse> AskAsync(AgentRequest<TVariables> request, CancellationToken ct)
     {
-        var history = new ChatHistory();
         var kernelArguments = CreateKernelArguments(request.Variables);
+        var systemPrompt = await GetSystemPromptAsync(kernelArguments, ct);
 
-        history.AddSystemMessage(await GetSystemPromptAsync(kernelArguments, ct));
-        history.AddUserMessage(request.UserMessage);
-        return await AskAsync(history, ct);
+        if (!UsePersistentHistory)
+        {
+            var history = new ChatHistory();
+            history.AddSystemMessage(systemPrompt);
+            history.AddUserMessage(request.UserMessage);
+            return await AskAsync(history, ct);
+        }
+
+        var combined = new ChatHistory();
+        combined.AddSystemMessage(systemPrompt);
+
+        foreach (var msg in _persistentHistory)
+        {
+            combined.AddMessage(msg.Role, msg.Content ?? string.Empty);
+        }
+
+        combined.AddUserMessage(request.UserMessage);
+        var response = await AskAsync(combined, ct);
+
+        _persistentHistory.AddUserMessage(request.UserMessage);
+        _persistentHistory.AddAssistantMessage(response.Content ?? string.Empty);
+
+        return response;
     }
 
     private async Task<AgentResponse> AskAsync(ChatHistory history, CancellationToken ct)

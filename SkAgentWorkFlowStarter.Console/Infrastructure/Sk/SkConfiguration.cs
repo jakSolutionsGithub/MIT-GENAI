@@ -6,6 +6,7 @@ using Microsoft.SemanticKernel;
 using SkAgentWorkFlowStarter.Console.Samples.MyAgents.IncidentTriageAgent.Tools;
 using SkAgentWorkFlowStarter.Console.Samples.Workflow.Tools;
 using SkAgentWorkFlowStarter.Console.Samples.MyAgents.MobilityFormAgent.Tools;
+using SkAgentWorkFlowStarter.Console.Samples.MyAgents.MobilityFormAgentClean.Tools;
 
 namespace SkAgentWorkFlowStarter.Console.Infrastructure.Sk;
 
@@ -33,6 +34,16 @@ public static class SkConfiguration
             pluginCollection.AddFromType<MobilityFormTools>(
                 serviceProvider: serviceProvider,
                 pluginName: nameof(MobilityFormTools),
+                jsonSerializerOptions: jsonOptions);
+
+            pluginCollection.AddFromType<MobilityLightTools>(
+                serviceProvider: serviceProvider,
+                pluginName: nameof(MobilityLightTools),
+                jsonSerializerOptions: jsonOptions);
+
+            pluginCollection.AddFromType<MobilityFormUpdateTools>(
+                serviceProvider: serviceProvider,
+                pluginName: nameof(MobilityFormUpdateTools),
                 jsonSerializerOptions: jsonOptions);
 
 

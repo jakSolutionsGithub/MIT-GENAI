@@ -58,3 +58,4 @@ nunit-*.xml
 
 appsettings.Development.json
 .env
+.codex
