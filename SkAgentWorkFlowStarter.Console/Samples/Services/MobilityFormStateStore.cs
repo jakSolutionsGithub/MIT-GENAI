@@ -31,6 +31,7 @@ public sealed class MobilityFormStateStore : IMobilityFormStateStore
             {
                 _state.Structured ??= new MobilityFormStructured();
                 MergeStructured(_state.Structured, patch.Structured);
+                RecomputeCo2FromStructured(_state.Structured);
             }
 
             if (patch.Assumptions is { Count: > 0 })
@@ -45,20 +46,41 @@ public sealed class MobilityFormStateStore : IMobilityFormStateStore
     {
         if (!string.IsNullOrWhiteSpace(patch.EventType)) target.EventType = patch.EventType;
         if (!string.IsNullOrWhiteSpace(patch.Location)) target.Location = patch.Location;
-        if (patch.Attendees is > 0) target.Attendees = patch.Attendees;
+        // Attendees is derived from participant segments; ignore direct patch value.
         if (!string.IsNullOrWhiteSpace(patch.Format)) target.Format = patch.Format;
         if (patch.DurationDays is > 0) target.DurationDays = patch.DurationDays;
 
         if (patch.ParticipantSegments is { Count: > 0 })
-            (target.ParticipantSegments ??= []).AddRange(patch.ParticipantSegments);
+            target.ParticipantSegments = patch.ParticipantSegments;
 
         if (patch.StaffSegments is { Count: > 0 })
-            (target.StaffSegments ??= []).AddRange(patch.StaffSegments);
+            target.StaffSegments = patch.StaffSegments;
 
         if (patch.Freight is { Count: > 0 })
-            (target.Freight ??= []).AddRange(patch.Freight);
+            target.Freight = patch.Freight;
 
         if (patch.Constraints is { Count: > 0 })
-            (target.Constraints ??= []).AddRange(patch.Constraints);
+            target.Constraints = patch.Constraints;
+    }
+
+    private static void RecomputeCo2FromStructured(MobilityFormStructured structured)
+    {
+        if (structured.ParticipantSegments is { Count: > 0 })
+        {
+            foreach (var s in structured.ParticipantSegments)
+                s.Co2Kg = Co2Calculator.ParticipantsKg(s.Mode, s.Count, s.DistanceKm);
+        }
+
+        if (structured.StaffSegments is { Count: > 0 })
+        {
+            foreach (var s in structured.StaffSegments)
+                s.Co2Kg = Co2Calculator.StaffKg(s.Mode, s.Count, s.DistanceKm);
+        }
+
+        if (structured.Freight is { Count: > 0 })
+        {
+            foreach (var s in structured.Freight)
+                s.Co2Kg = Co2Calculator.FreightKg(s.Mode, s.WeightKg, s.DistanceKm, s.RoundTrips);
+        }
     }
 }
