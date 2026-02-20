@@ -1,6 +1,6 @@
 namespace SkAgentWorkFlowStarter.Console.Samples.MobilityAssistant.Models;
 
-public record Co2Breakdown(
+public sealed record Co2Breakdown(
     double ParticipantsKg,
     double StaffKg,
     double FreightKg,
